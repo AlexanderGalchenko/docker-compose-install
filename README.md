@@ -1,19 +1,51 @@
-1. Install Docker Engine:
-The recommended method for installing Docker Engine varies depending on your operating system. For most Linux distributions, you can use the official Docker repositories. For example, on Debian-based systems, you would: Update the apt package index.
+# Установка Docker Engine и Docker Compose Plugin
+
+Этот документ описывает процесс установки **Docker Engine** и **Docker Compose Plugin** на системы на базе Debian/Ubuntu.
+
 ---
- sudo apt-get update
- sudo apt-get install ca-certificates curl gnupg
- 
- sudo install -m 0755 -d /etc/apt/keyrings
- curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
- sudo chmod a+r /etc/apt/keyrings/docker.gpg
 
-   echo \
-    "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
-    "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
-    sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+## 1. Установка Docker Engine
 
-  sudo apt-get update
-  sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+### Шаг 1. Обновите индекс пакетов
 
-  
+```bash
+sudo apt-get update
+Шаг 2. Установите необходимые пакеты
+sudo apt-get install ca-certificates curl gnupg
+
+Шаг 3. Добавьте официальный GPG-ключ Docker
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+
+Шаг 4. Настройте репозиторий Docker
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+Шаг 5. Установите Docker Engine, CLI, containerd и плагин Compose
+sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+Шаг 6. Проверьте установку
+sudo docker run hello-world
+
+2. Установка Docker Compose Plugin вручную
+
+Если Docker Engine был установлен без встроенного Compose-плагина, его можно добавить вручную.
+
+Шаг 1. Скачайте последнюю версию Docker Compose
+DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
+mkdir -p $DOCKER_CONFIG/cli-plugins
+curl -SL https://github.com/docker/compose/releases/download/v2.23.3/docker-compose-linux-x86_64 \
+  -o $DOCKER_CONFIG/cli-plugins/docker-compose
+
+
+💡 Замените v2.23.3 на нужную версию и x86_64 на архитектуру вашей системы (например, aarch64 для ARM).
+
+Шаг 2. Сделайте файл исполняемым
+chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
+
+Шаг 3. Проверьте установку
+docker compose version
