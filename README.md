@@ -38,7 +38,7 @@ echo \
 ### Шаг 5. Установите Docker Engine, CLI, containerd и плагин Compose
 ```bash
 sudo apt-get update
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin```
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
 ### Шаг 6. Проверьте установку
 ```bash
